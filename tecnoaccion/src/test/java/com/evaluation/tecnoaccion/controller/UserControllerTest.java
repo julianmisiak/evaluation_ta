@@ -1,4 +1,4 @@
-package com.evaluation.tecnoaccion.unittest;
+package com.evaluation.tecnoaccion.controller;
 
 import static org.junit.Assert.*;
 
@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UnitTest {
+public class UserControllerTest {
 	@LocalServerPort
 	private int port;
 
@@ -49,12 +49,11 @@ public class UnitTest {
 	public void testGetUserById() throws IOException {
 		Long idUser = getFirstOidUser();
 		entity = new HttpEntity<String>(null, headers);
-		response = restTemplate.exchange(createURLWithPort(URL_USER + "/" + idUser), HttpMethod.GET, entity,
-				String.class);
+		response = restTemplate.exchange(createURLWithPort(URL_USER + "/" + idUser), HttpMethod.GET, entity, String.class);
 
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
 	}
-	
+
 	@Test
 	public void testDeleteUserByOid() throws IOException {
 		Long idUser = getFirstOidUser();
@@ -62,30 +61,7 @@ public class UnitTest {
 
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
 	}
-	
-	@Test
-	public void testBets() throws IOException {
-		Integer limit = 2;
-		Integer offset = 0;
-		String URL_BETS = "/bets/limit/" + limit + "/offset/" + offset;
 
-		response = restTemplate.exchange(createURLWithPort(URL_BETS), HttpMethod.GET, entity, String.class);
-
-		assertEquals(response.getStatusCode(), HttpStatus.OK);
-	}
-	
-	@Test
-	public void testBetsAndGameId() throws IOException {
-		Integer limit = 2;
-		Integer offset = 0;
-		Long idUser = getFirstOidUser();
-		String URL_BETS = "/bets/limit/" + limit + "/offset/" + offset + "/game_id/" + idUser;
-
-		response = restTemplate.exchange(createURLWithPort(URL_BETS), HttpMethod.GET, entity, String.class);
-
-		assertEquals(response.getStatusCode(), HttpStatus.OK);
-	}
-	
 	private String createURLWithPort(String uri) {
 		return "http://localhost:" + port + uri;
 	}
